@@ -30,6 +30,8 @@ import pytz
 
 import requests
 from xml.etree import ElementTree as ET
+import xmltodict
+
 import time
 
 from .exception import ExceptionFactory
@@ -385,8 +387,11 @@ class ADEWebAPI():
         self._test_opt_params(kwargs, function)
         typ = 'event'
         element = self._send_request(function, **kwargs)
-        lst_events = element.findall(typ)
-        lst_events = self._create_list_of(typ, lst_events)
+        # Seems we can't get all subentries with findall()
+        # -> get directly a dict for all
+        lst_events = xmltodict.parse(ET.tostring(element))
+        #lst_events = element.findall(typ)
+        #lst_events = self._create_list_of(typ, lst_events)
         return(lst_events)
         
     def getCosts(self, **kwargs):
