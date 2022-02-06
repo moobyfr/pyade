@@ -18,11 +18,16 @@ This is an unofficial development. I am in no way related to this company. Use i
 
 WORK IN PROGRESS
 
+Warning: This version cannot use Object (with create_list_of_objects): When requestions high details, some subkeys are lost with the original version (Events, and Resources)
+
+Dict are used to get all items (attributs and subkeys)
+
 ## Dependencies
 
  * `click` Command Line Interface Creation Kit http://click.pocoo.org/ 
  * `requests` Requests: HTTP for Humans http://www.python-requests.org/
  * `pytz` World Timezone Definitions for Python http://pytz.sourceforge.net/
+ * `xmltodict`
 
 ## Install
 

@@ -367,9 +367,7 @@ class ADEWebAPI():
             category = kwargs['category']
         else:
             category = 'resource'
-        lst_resources = element.findall(category)
-        lst_resources = self._create_list_of(category, lst_resources)
-        return(lst_resources)
+        return(xmltodict.parse(ET.tostring(element)))
 
     def getActivities(self, **kwargs):
         """Returns activity(ies) from several optional arguments"""
@@ -377,9 +375,7 @@ class ADEWebAPI():
         self._test_opt_params(kwargs, function)
         typ = 'activity'
         element = self._send_request(function, **kwargs)
-        lst_activities = element.findall(typ)
-        lst_activities = self._create_list_of(typ, lst_activities)
-        return(lst_activities)
+        return(xmltodict.parse(ET.tostring(element)))
         
     def getEvents(self, **kwargs):
         """Returns event(s) from several optional arguments"""
@@ -387,12 +383,7 @@ class ADEWebAPI():
         self._test_opt_params(kwargs, function)
         typ = 'event'
         element = self._send_request(function, **kwargs)
-        # Seems we can't get all subentries with findall()
-        # -> get directly a dict for all
-        lst_events = xmltodict.parse(ET.tostring(element))
-        #lst_events = element.findall(typ)
-        #lst_events = self._create_list_of(typ, lst_events)
-        return(lst_events)
+        return(xmltodict.parse(ET.tostring(element)))
         
     def getCosts(self, **kwargs):
         """Returns cost(s) from several optional arguments"""
