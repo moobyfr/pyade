@@ -1,8 +1,8 @@
 __author__ = "Sebastien Celles"
 __copyright__ = "Copyright 2015, celles.net"
-__credits__ = ["Sebastien Celles"]
+__credits__ = ["Sebastien Celles", "Emmanuel Blindauer"]
 __license__ = "GPL v3"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __maintainer__ = "Sebastien Celles"
 __email__ = "s.celles@gmail.com"
 __status__ = "Development"
