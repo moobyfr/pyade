@@ -21,6 +21,7 @@
 """
 
 import os
+import base64
 
 import logging
 import traceback
@@ -267,6 +268,14 @@ class ADEWebAPI():
 
         self.create_list_of_objects(False)
 
+    def _get_basic_auth_header(self):
+        """Returns Basic Authentication header value"""
+        credentials = f"{self.login}:{self.password}"
+        credentials_bytes = credentials.encode('ascii')
+        base64_bytes = base64.b64encode(credentials_bytes)
+        base64_string = base64_bytes.decode('ascii')
+        return f"Basic {base64_string}"
+
     def _project_init(self):
         self._first_date = None
 
@@ -283,9 +292,16 @@ class ADEWebAPI():
         if 'sessionId' not in params.keys():
             if self.sessionId is not None:
                 params['sessionId'] = self.sessionId
+
+        # Add Basic Authentication header only for connect function
+        headers = {}
+        if func == 'connect':
+            headers['Authorization'] = self._get_basic_auth_header()
         
+        self.logger.debug("url %s" % self.url)
         self.logger.debug("send %s" % hide_dict_values(params))
-        response = requests.get(self.url, params=params)
+        self.logger.debug("headers: %s" % headers)
+        response = requests.get(self.url, params=params, headers=headers)
         self.logger.debug(response)
         self.logger.debug(response.text)
         element = ET.fromstring(response.text)
@@ -303,8 +319,7 @@ class ADEWebAPI():
     def connect(self):
         """Connect to server"""
         function = 'connect'
-        element = self._send_request(function,
-            login=self.login, password=self.password)
+        element = self._send_request(function)
         returned_sessionId = element.attrib["id"]
         self.sessionId = returned_sessionId
         return(returned_sessionId is not None)
